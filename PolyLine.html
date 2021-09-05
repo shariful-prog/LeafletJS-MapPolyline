@@ -28,12 +28,12 @@
 
 <div id="mapid" style="width: 600px; height: 400px;"></div>
 <script>
+    SetMap();
 
-	// free reverse geocoding but have some request limitation
-	//https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=23.7059887&lon=90.4250378
+
+function SetMap(){
 
 	var mymap = L.map('mapid').setView([23.810331, 90.412521], 10);
-
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
@@ -44,58 +44,71 @@
 	}).addTo(mymap);
 
 
+    var actualData=[{
+        LatValue : 90.419884,
+        LongValue : 23.704580
+    },{
+        LatValue : 90.383148,
+        LongValue : 23.745440
+    },
+    {
+        LatValue : 90.418053,
+        LongValue : 23.771626
+    }];
 	
-var pointsForJson = [
-		[23.704580,90.419884],
-		[23.745440, 90.383148],
-		[23.771626, 90.418053],
-		[23.7059887,90.4250378]
-];
+// var pointsForJson = [
+// 		[23.704580,90.419884],
+// 		[23.745440, 90.383148],
+// 		[23.771626, 90.418053],
+// 		[23.7059887,90.4250378]
+// ];
+for(i=0;i<actualData.length;i++){
+    var latlng=[actualData[i].LatValue, actualData[i].LongValue];
 
-  pointsForJson.forEach(function(lngLat) {
-  L.marker(lngLatToLatLng(lngLat)).addTo(mymap)
-});
-	// L.marker([23.704580,90.419884],
+    L.marker(latlng).addTo(mymap);
+
+        //reverse geociding to display the exact address of the marker
+    //     new ELG.ReverseGeocode().latlng(latlng).run((error, result) =>{
+    //     if(error){
+    //       return;
+    //     }
+
+    //     L.marker([actualData[i].LatValue, actualData[i].LongValue]).addTo(this.map)
+    //     .bindPopup("<br>"+"Exact place :"+"<br>"+ result.address.Match_addr+"<br>"+"Reporting time: ");
+    //   })
+
+
+
+
+}
+
+//   pointsForJson.forEach(function(lngLat) {
+//   L.marker(lngLatToLatLng(lngLat)).addTo(mymap)
+// });
+
+
+	// L.polyline([
+	// 	[23.704580,90.419884],
 	// 	[23.745440, 90.383148],
-	// 	[23.771626, 90.418053]).addTo(mymap)
-	// 	.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-
-	L.polyline([
-		[23.704580,90.419884],
-		[23.745440, 90.383148],
-		[23.771626, 90.418053]
-	]).addTo(mymap);
+	// 	[23.771626, 90.418053]
+	// ]).addTo(mymap);
 
 
-	var popup = L.popup();
+	// var popup = L.popup();
 
-// 	var geocodeService = L.esri.Geocoding.geocodeService();
 
-// 	mymap.on('click', function(e) {
-//   geocodeService.reverse().latlng(e.latlng).run(function(error, result) {
-//     L.marker(result.latlng).addTo(map).bindPopup(result.address.Match_addr).openPopup();
-//   });
-// });
+	// function onMapClick(e) {
+	// 	popup
+	// 		.setLatLng(e.latlng)
+	// 		.setContent("You clicked the map at " + e.latlng.toString())
+		
+	// 		.openOn(mymap);
+	// }
 
-// 	var geocodeService = L.esri.Geocoding.geocodeService();
-// 	mymap.on('click', function (e) {
-//     geocodeService.reverse().latlng(e.latlng).run(function (error, result) {
-//       if (error) {
-//         return;
-//       }
+	// mymap.on('click', onMapClick);
 
-//       L.marker(result.latlng).addTo(mymap).bindPopup(result.address.Match_addr).openPopup();
-//     });
-// });
 
-	function onMapClick(e) {
-		popup
-			.setLatLng(e.latlng)
-			.setContent("You clicked the map at " + e.latlng.toString())
-			.openOn(mymap);
-	}
-
-	mymap.on('click', onMapClick);
+}
 
 
 	
